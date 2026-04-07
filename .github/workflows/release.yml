@@ -1,0 +1,27 @@
+name: Repo-run-${{ github.event.client_payload.version }}
+
+on:
+  repository_dispatch:
+    types: [trigger-release]
+    
+permissions:
+  contents: write
+
+jobs:
+  release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # Needed so we can create tags
+          ref: ${{ github.event.client_payload.branch }}
+
+      - name: Generate tag from commit SHA
+        id: tagger
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          TAG="build-${SHORT_SHA}"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
