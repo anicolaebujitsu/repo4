@@ -1,4 +1,4 @@
-name: Repo4-run-${{ github.event.client_payload.version }}
+name: Repo4-run
 
 on:
   repository_dispatch:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  release:
+  release-(${{ github.event.client_payload.version }}):
 
     runs-on: ubuntu-latest
 
